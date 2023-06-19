@@ -5,7 +5,8 @@
 
 void Main()
 {
-	
+	// Controller 用法
+	Application.ConcertTickets.ConcertTicketAppService app = new ConcertTicketAppService(new ReserveRepository());
 }
 
 #region Domain Layer
@@ -17,21 +18,57 @@ public class Entity
 {	
 }
 
+public abstract class ValueObject
+{
+	
+}
+
 public class Ticket: Entity, IAggregateRoot
 {
-	private Guid id;
-	private string ReservatName;
-	public void SetReservatName(string name)
-	{
-		ReservatName = name;
-	}
-	public int AddTicket(Ticket ticket)
+	public Guid Id { get; set; }
+	public string ReservatName { get; protected set;}
+	// 確認購票
+	public int SaveTicket()
 	{
 		return 0;
 	}
+	// 建立票卷
+	public static Ticket Create(SeatReservation reserve)
+	{
+		return new Ticket() { Id = Guid.NewGuid() };
+	}
+}
+// 預定位 Entity
+public class SeatReservation: Entity
+{
+	public Guid Id { get; protected set; }
+	public string ReserveName { get; protected set; }
+	public ConcertVenue ReserveConcertVenue { get; protected set; }
+	public DateTime? ShowTime { get; set; }
+	// 確認與預訂票卷
+	public Ticket SetReservat(string name)
+	{
+		return new Ticket();
+	}
+	public string[] GetReserveByDate(TimeSpan reserveRange)
+	{
+		return new string[] {};
+	}
+	public static SeatReservation Create(string ReserveName)
+	{
+		return new SeatReservation() { Id = Guid.NewGuid() };
+	}
 }
 
-public class SeatReservation: Entity
+public class Membership: Entity
+{
+}
+
+public class Account: Entity, IAggregateRoot
+{
+}
+
+public class ConcertVenue: ValueObject
 {
 	
 }
@@ -40,49 +77,60 @@ public class SeatReservation: Entity
 #region Application Services
 namespace Application.ConcertTickets
 {
-	public interface ITicketRepository
+	public interface IReserveRepository
 	{
-		int AddConcertReservation(Ticket ticket);
+		int SaveConcertReservation(Ticket ticket);
 	}
 	
 	public class ConcertTicketAppService
 	{
-		private ITicketRepository _ticketRepository;
-		public ConcertTicketAppService(ITicketRepository ticketRepository)
+		private IReserveRepository _reserveRepository;
+		public ConcertTicketAppService(IReserveRepository ticketRepository)
 		{
-			_ticketRepository = ticketRepository;
+			_reserveRepository = ticketRepository;
 		}
-		public int Reservation(TicketDTO ticketDto)
+		// 購票作業
+		public int Reservation(ReserveDTO ticketDto)
 		{
 			// 檢核購票時間
 			
 			// 檢核選擇票種是否還有位子？
 			
-			// 進行購票作業
-			Ticket ticket = new Ticket();
-			ticket.SetReservatName("gelis");
-			_ticketRepository.AddConcertReservation(ticket);
+			// 若選擇時間有票種，進行購票作業（此預定保留 10 分鐘、若未付款，10分鐘取消資格，將釋放此預訂票種給其他訂票作業的 Transaction）
+			SeatReservation seat = SeatReservation.Create(ticketDto.ReserveID);
+			
+			// 預訂票卷（此預定預設保留 10 分鐘）
+			Ticket ticket = seat.SetReservat(ticketDto.ReserveID);
 			
 			return 0;
 		}
+		// 確認定位
+		public int SaveReservation(Ticket ticket)
+		{
+			return _reserveRepository.SaveConcertReservation(ticket);
+		}
 	}
 }
-
+// DTO 組件
 namespace Application.DTO
 {
-	public class TicketDTO
+	public class ReserveDTO
 	{
-		
+		public string ReserveID { get; set; }
+		public DateTime? ReserveTime { get; set; }
+		public int? ShowTime {get;set;}
 	}
 }
 #endregion
 
 #region Infrastructure
-public class TicketRepository : ITicketRepository
+// 基礎建設
+public class ReserveRepository : IReserveRepository
 {
-	public int AddConcertReservation(Ticket ticket)
+	//  預定購票作業
+	public int SaveConcertReservation(Ticket ticket)
 	{
-		throw new NotImplementedException();
+		return ticket.SaveTicket();
 	}
 }
 #endregion
