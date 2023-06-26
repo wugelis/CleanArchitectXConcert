@@ -32,4 +32,8 @@
 	  <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="3.21.50" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Infrastructure.ConcertTickets\Infrastructure.ConcertTickets.csproj" />
+  </ItemGroup>
+
 </Project>

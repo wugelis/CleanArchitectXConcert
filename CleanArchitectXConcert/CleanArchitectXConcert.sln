@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.ConcertTickets"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{EFE734C7-B052-45DE-A4AD-2D979A41E99B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.XConcertTickets", "Web.XConcertTickets\Web.XConcertTickets.csproj", "{380008E0-722F-451D-B838-19D459D064D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web.XConcertTickets", "Web.XConcertTickets\Web.XConcertTickets.csproj", "{380008E0-722F-451D-B838-19D459D064D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.ConcertTickets", "Infrastructure.ConcertTickets\Infrastructure.ConcertTickets.csproj", "{33D91C80-EC3F-4DC0-8DE3-521B39BBB698}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,10 @@ Global
 		{380008E0-722F-451D-B838-19D459D064D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{380008E0-722F-451D-B838-19D459D064D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{380008E0-722F-451D-B838-19D459D064D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33D91C80-EC3F-4DC0-8DE3-521B39BBB698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33D91C80-EC3F-4DC0-8DE3-521B39BBB698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33D91C80-EC3F-4DC0-8DE3-521B39BBB698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33D91C80-EC3F-4DC0-8DE3-521B39BBB698}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
