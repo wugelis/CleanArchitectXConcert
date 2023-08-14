@@ -10,4 +10,8 @@
     <ProjectReference Include="..\Domain\Domain.ConcertTickets.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="EasyArchitect.OutsideManaged.AuthExtensions" Version="6.0.1.1" />
+	</ItemGroup>
+
 </Project>
