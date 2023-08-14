@@ -1,7 +1,10 @@
-﻿using EasyArchitect.OutsideApiControllerBase;
+﻿using Application.ConcertTickets;
+using Domain.ConcertTickets;
+using EasyArchitect.OutsideApiControllerBase;
 using EasyArchitect.OutsideManaged.AuthExtensions.Attributes;
 using EasyArchitect.OutsideManaged.AuthExtensions.Filters;
 using EasyArchitect.OutsideManaged.AuthExtensions.Services;
+using Infrastructure.ConcertTickets;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mxic.FrameworkCore.Core;
@@ -34,25 +37,25 @@ namespace Web.XConcertTickets.Controllers
             _uriExtensions = uriExtensions;
         }
 
-        /// <summary>
-        /// 範例程式（需要驗證）
-        /// </summary>
-        /// <returns></returns>
         [NeedAuthorize]
         [HttpGet]
-        [APIName("GetPersons")]
+        [APIName("SeatReservation")]
         [ApiLogException]
         [ApiLogonInfo]
-        public async Task<IEnumerable<Person>> GetPersons()
+        public async Task<ReserveResponseDTO> SeatReservation(string ReserveName, DateTime? startShowTime, DateTime? endShowTime)
         {
-            return await Task.FromResult(new Person[]
-            {
-                new Person()
+            Application.ConcertTickets.ConcertTicketAppService app = new ConcertTicketAppService(new ReserveRepository());
+            ReserveResponseDTO result = app.Reservation(
+                new ReserveDTO()
                 {
-                    ID = 1,
-                    Name = "Gelis Wu"
+                    ReserveID = "XXXXX10001",   //訂位代號（流水號）
+                    ReserveName = ReserveName,  //定位大名
+                    ReserveTime = DateTime.Now, // 訂位時間、不等於票種時間 或 演唱會場時間 (the showtime for Concert Venue)
+                    ShowTime = new ShowTime(startShowTime, endShowTime)
                 }
-            });
+            );
+
+            return await Task.FromResult(result);
         }
 
         /// <summary>
@@ -80,14 +83,5 @@ namespace Web.XConcertTickets.Controllers
         {
             return await Task.FromResult(_userService.IdentityUser);
         }
-    }
-
-    /// <summary>
-    /// 範例程式：請放置在你的 Models/Dto/VO 專案裡
-    /// </summary>
-    public class Person
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
     }
 }
