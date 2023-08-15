@@ -37,21 +37,28 @@ namespace Web.XConcertTickets.Controllers
             _uriExtensions = uriExtensions;
         }
 
-        [NeedAuthorize]
-        [HttpGet]
+        /// <summary>
+        /// 訂票作業
+        /// </summary>
+        /// <param name="ReserveName"></param>
+        /// <param name="startShowTime"></param>
+        /// <param name="endShowTime"></param>
+        /// <returns></returns>
+        //[NeedAuthorize]
+        [HttpPost]
         [APIName("SeatReservation")]
         [ApiLogException]
         [ApiLogonInfo]
-        public async Task<ReserveResponseDTO> SeatReservation(string ReserveName, DateTime? startShowTime, DateTime? endShowTime)
+        public async Task<ReserveResponseDTO> SeatReservation(ReserveRequestDTO reserveRequest)
         {
             Application.ConcertTickets.ConcertTicketAppService app = new ConcertTicketAppService(new ReserveRepository());
             ReserveResponseDTO result = app.Reservation(
                 new ReserveDTO()
                 {
                     ReserveID = "XXXXX10001",   //訂位代號（流水號）
-                    ReserveName = ReserveName,  //定位大名
+                    ReserveName = reserveRequest.ReserveName,  //定位大名
                     ReserveTime = DateTime.Now, // 訂位時間、不等於票種時間 或 演唱會場時間 (the showtime for Concert Venue)
-                    ShowTime = new ShowTime(startShowTime, endShowTime)
+                    ShowTime = new ShowTime(reserveRequest.startShowTime, reserveRequest.endShowTime)
                 }
             );
 

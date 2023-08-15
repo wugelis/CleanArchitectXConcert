@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Domain.ConcertTickets
 {
     /// <summary>
-    /// 
+    /// 場次值物件
     /// </summary>
     public class ShowTime : ValueObject
     {

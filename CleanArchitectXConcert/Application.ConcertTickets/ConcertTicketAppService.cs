@@ -14,7 +14,9 @@ namespace Application.ConcertTickets
         public ReserveResponseDTO Reservation(ReserveDTO ticketDto)
         {
             // 建立票種、若選擇時間有票種，進行購票作業
-            SeatReservation seat = SeatReservation.Create(ticketDto.ReserveID, ticketDto.ShowTime);
+            SeatReservation seat = SeatReservation.Create(ticketDto.ReserveName, ticketDto.ShowTime);
+
+            seat = seat.BuildConertVenue(seat);
 
             // 產生新的票卷（此預定保留 10 分鐘）
             Ticket ticket = Ticket.Create(seat);
