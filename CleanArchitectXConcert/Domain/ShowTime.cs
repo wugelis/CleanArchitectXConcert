@@ -11,6 +11,7 @@ namespace Domain.ConcertTickets
     /// </summary>
     public class ShowTime : ValueObject
     {
+        public ShowTime() { }
         public ShowTime(DateTime? startShowTime, DateTime? endShowTime)
         {
             if (!startShowTime.HasValue || !endShowTime.HasValue)

@@ -17,6 +17,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure.ConcertTicke
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.ConcertTicketsTests", "Application.ConcertTicketsTests\Application.ConcertTicketsTests.csproj", "{BCE51459-7CAE-4AA4-87AA-D84E7576772C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{595FB86E-D89A-451B-B4C7-51B38033B531}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{09B8258E-E547-4EA9-BFE3-B140D1F38FAC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{3488278E-F21B-4519-B781-73FD9A0C9480}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,7 +54,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{FDEB1234-D6A1-414D-8101-8A7B9709B92D} = {09B8258E-E547-4EA9-BFE3-B140D1F38FAC}
+		{CD2F3008-768A-4765-A172-8BCA65CDEA7A} = {595FB86E-D89A-451B-B4C7-51B38033B531}
 		{380008E0-722F-451D-B838-19D459D064D1} = {EFE734C7-B052-45DE-A4AD-2D979A41E99B}
+		{33D91C80-EC3F-4DC0-8DE3-521B39BBB698} = {3488278E-F21B-4519-B781-73FD9A0C9480}
 		{BCE51459-7CAE-4AA4-87AA-D84E7576772C} = {FAE1FF5D-44DF-4937-A89C-0AF5DEB36344}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

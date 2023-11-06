@@ -1,19 +1,30 @@
+using Application.ConcertTickets;
 using EasyArchitect.OutsideApiControllerBase;
 using EasyArchitect.OutsideManaged.AuthExtensions.Models;
 using EasyArchitect.OutsideManaged.AuthExtensions.Services;
 using EasyArchitect.OutsideManaged.Configuration;
 using EasyArchitect.OutsideManaged.JWTAuthMiddlewares;
+using Infrastructure.ConcertTickets;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Mxic.FrameworkCore.Core;
 using System.Configuration;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Web.XConcertTickets.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddCors();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    //.ConfigureApiBehaviorOptions(setup =>
+    //{
+    //    // 關閉驗證失敗時會自動回應 HTTP 400
+    //    setup.SuppressModelStateInvalidFilter = true;
+    //})
+    ;
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthentication(configure =>
 {
@@ -52,6 +63,8 @@ builder.Services.AddScoped<IUserService, UserService>(x => new UserService(
     }, x.GetRequiredService<ModelContext>()));
 
 builder.Services.AddScoped<IUriExtensions, UriExtensions>();
+builder.Services.AddScoped<IReserveRepository, ReserveRepository>();
+builder.Services.AddScoped<ConcertTicketAppService>(c => new ConcertTicketAppService(c.GetRequiredService<IReserveRepository>()));
 
 var app = builder.Build();
 

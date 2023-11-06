@@ -10,7 +10,12 @@ namespace Application.ConcertTickets
         {
             _reserveRepository = ticketRepository;
         }
-        // 購票作業流程
+        /// <summary>
+        /// 購票作業流程
+        /// </summary>
+        /// <param name="ticketDto"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidSeatReservationException"></exception>
         public ReserveResponseDTO Reservation(ReserveDTO ticketDto)
         {
             // 建立票種、若選擇時間有票種，進行購票作業
@@ -32,10 +37,28 @@ namespace Application.ConcertTickets
 
             return new ReserveResponseDTO() { MySeatServe = seat, MyTicket = ticket };
         }
-        // 確認定位
-        public int SaveReservation(Ticket ticket)
+        /// <summary>
+        /// 查詢 Currennt 訂票資訊（10分鐘內付款內有效）
+        /// </summary>
+        /// <param name="ticketId"></param>
+        /// <returns></returns>
+        public IEnumerable<TicketResponseDTO> GetTickets(Guid ticketId)
         {
-            return _reserveRepository.SaveConcertReservation(ticket);
+            IEnumerable<TicketResponseDTO> result = from ticket in _reserveRepository.GetMySeatRevervations(ticketId)
+                                                    select new TicketResponseDTO()
+                                                    {
+                                                        //Id = ticket.Id,
+                                                        ReserveName = ticket.SeatReservationInfo.ReserveName,
+                                                        ReserveConcertVenue = ticket.SeatReservationInfo.ReserveConcertVenue,
+                                                        ticket = ticket
+                                                    };
+
+            return result;
+        }
+        // 確認定位
+        public int SaveReservation(TicketRequestDTO ticket)
+        {
+            return _reserveRepository.SaveConcertReservation(ticket.MyTicket);
         }
     }
 }

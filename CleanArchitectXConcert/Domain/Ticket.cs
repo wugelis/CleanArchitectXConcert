@@ -5,9 +5,16 @@ namespace Domain
     public class Ticket : Entity, IAggregateRoot
     {
         private SeatReservation _seatReservation;
-        public SeatReservation SeatReservationInfo => _seatReservation;
+        public SeatReservation SeatReservationInfo
+        {
+            get => _seatReservation;
+            set => _seatReservation = value;
+        }
+        /// <summary>
+        /// Entity ID
+        /// </summary>
         public Guid Id { get; set; }
-        public string ReservatName { get; protected set; }
+        //public string ReserveName { get; set; } // 與 SeatReservation 中的 ReserveName 重複
         // 確認購票
         public int SaveTicket()
         {

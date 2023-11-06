@@ -6,8 +6,8 @@
     public class SeatReservation : Entity
     {
         public Guid Id { get; protected set; }
-        public string ReserveName { get; protected set; }
-        public ConcertVenue ReserveConcertVenue { get; protected set; }
+        public string ReserveName { get; set; }
+        public ConcertVenue ReserveConcertVenue { get; set; }
         public ShowTime ShowTime { get; set; }
         // 確認與預訂票卷
         public Ticket SetReservat(Ticket ticket)

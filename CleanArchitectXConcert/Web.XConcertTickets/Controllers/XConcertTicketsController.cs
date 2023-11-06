@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Mxic.FrameworkCore.Core;
 using System;
+using System.Collections;
 
 namespace Web.XConcertTickets.Controllers
 {
@@ -19,6 +20,7 @@ namespace Web.XConcertTickets.Controllers
     {
         private readonly IUserService _userService;
         private readonly IUriExtensions _uriExtensions;
+        private readonly ConcertTicketAppService _ticketApp;
 
         /// <summary>
         /// 
@@ -30,11 +32,13 @@ namespace Web.XConcertTickets.Controllers
             ILogger<OutsideBaseApiController> logger, 
             IUserService userService, 
             IUriExtensions uriExtensions,
-            IHttpContextAccessor httpContextAccessor) 
+            IHttpContextAccessor httpContextAccessor,
+            ConcertTicketAppService ticketApp) 
             : base(logger, userService, httpContextAccessor)
         {
             _userService = userService;
             _uriExtensions = uriExtensions;
+            _ticketApp = ticketApp;
         }
 
         /// <summary>
@@ -51,8 +55,8 @@ namespace Web.XConcertTickets.Controllers
         [ApiLogonInfo]
         public async Task<ReserveResponseDTO> SeatReservation(ReserveRequestDTO reserveRequest)
         {
-            Application.ConcertTickets.ConcertTicketAppService app = new ConcertTicketAppService(new ReserveRepository());
-            ReserveResponseDTO result = app.Reservation(
+            //Application.ConcertTickets.ConcertTicketAppService app = new ConcertTicketAppService(new ReserveRepository());
+            ReserveResponseDTO result = _ticketApp.Reservation(
                 new ReserveDTO()
                 {
                     ReserveID = "XXXXX10001",   //訂位代號（流水號）
@@ -65,6 +69,40 @@ namespace Web.XConcertTickets.Controllers
             return await Task.FromResult(result);
         }
 
+        /// <summary>
+        /// 保存目前 Current Session 下的訂票紀錄
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [APIName("SaveReservation")]
+        [ApiLogException]
+        [ApiLogonInfo]
+        public async Task<int> SaveReservation(TicketRequestDTO ticketDTO)
+        {
+            return await Task.FromResult(_ticketApp.SaveReservation(ticketDTO));
+        }
+
+        [HttpPost]
+        [APIName("SaveData")]
+        [ApiLogException]
+        [ApiLogonInfo]
+        public async Task<int> SaveData(Person data)
+        {
+            var ticket = data;
+            return await Task.FromResult(1);
+        }
+        /// <summary>
+        /// 取得目前 Current Session 下的訂票情況
+        /// </summary>
+        /// <param name="grid"></param>
+        /// <returns></returns>
+        [APIName("GetTicketsById")]
+        [ApiLogException]
+        [ApiLogonInfo]
+        public async Task<IEnumerable<TicketResponseDTO>> GetTicketsById(string grid)
+        {
+            return await Task.FromResult(_ticketApp.GetTickets(Guid.Parse(grid)));
+        }
         /// <summary>
         /// 取得 Current Identity Id
         /// </summary>
@@ -90,5 +128,14 @@ namespace Web.XConcertTickets.Controllers
         {
             return await Task.FromResult(_userService.IdentityUser);
         }
+    }
+
+    /// <summary>
+    /// 範例程式：請放置在你的 Models/Dto/VO 專案裡
+    /// </summary>
+    public class Person
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
     }
 }
